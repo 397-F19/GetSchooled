@@ -16,6 +16,7 @@ import Profile from "../screens/Profile";
 import Homepage from "../screens/Homepage";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
+import NewCard from "../screens/NewCard";
 // drawer
 import Menu from "./Menu";
 import DrawerItem from "../components/DrawerItem";
@@ -162,6 +163,14 @@ const AppStack = createDrawerNavigator(
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
           <DrawerItem focused={focused} screen="Homepage" title="Homepage" />
+        )
+      })
+    },
+    NewCard: {
+      screen: NewCard,
+      navigationOptions: navOpt => ({
+        drawerLabel: ({ focused }) => (
+          <DrawerItem focused={focused} screen="NewCard" title="NewCard" />
         )
       })
     },

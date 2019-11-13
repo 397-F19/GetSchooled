@@ -16,6 +16,7 @@ const { width, height } = Dimensions.get("screen");
 
 class Homepage extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
       <Block flex style={styles.container}>
         <StatusBar hidden />
@@ -39,7 +40,7 @@ class Homepage extends React.Component {
                 <Button
                   style={styles.button}
                   color="#ffffff"
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("NewCard")}
                   textStyle={{ color: "#745c97", fontSize: 20 }}
                 >
                   New Notecard
