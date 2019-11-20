@@ -16,8 +16,6 @@ class NewCard extends React.Component {
   }
 
   renderArticles = () => {
-    var front = "";
-    var back = "";
 
     return (
       <ImageBackground
@@ -26,7 +24,7 @@ class NewCard extends React.Component {
       >
       <ScrollView
         showsVerticalScrollIndicator={false}>
-        <Block center flex paddingTop={30}>
+        <Block center flex paddingTop={height*.1}>
             <Text bold size={24} style={styles.title}>
               Front
             </Text>
@@ -67,8 +65,8 @@ class NewCard extends React.Component {
                                 f.clear();
                                 b.clear();
                                 // TODO: add storing the front and back into card storage
-                                this.state.front = "";
-                                this.state.back = "";
+                                this.setState({front: ""});
+                                this.setState({back: ""});
                                 console.log(this.state.front);
                                 console.log(this.state.back);}}
                 textStyle={{ color: "#745c97", fontSize: 20 }}
