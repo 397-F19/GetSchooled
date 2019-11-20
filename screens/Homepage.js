@@ -73,7 +73,7 @@ class Homepage extends React.Component {
                   style={styles.button}
                   paddingTop={80}
                   color="#ffffff"
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("Review")}
                   textStyle={{ color: "#745c97", fontSize: 20 }}
                 >
                   Start Review
