@@ -17,6 +17,32 @@ const { width, height } = Dimensions.get("screen");
 class Homepage extends React.Component {
   render() {
     const { navigation } = this.props;
+
+    var firstlogin = new Date("11/16/19");
+    var today = new Date();
+    var daydiff = Math.floor((today.getTime() - firstlogin.getTime()) /
+                              (1000 * 3600 * 24));
+    const bucketcolors = ["info", "success", "warning", "error"];
+    const bucketinterval = [1, 2, 4, 8];
+
+    console.log(daydiff);
+
+    const Bucket = bucket => {
+      var bucketn = Number(bucket.bucket);
+      console.log(bucket)
+      if (daydiff%bucketinterval[bucketn-1] === 0) {
+        return (
+        <Button color={bucketcolors[bucketn-1]} >
+        <Text style = {{ color: "#ffffff", fontSize: 20 }}>
+        {bucketn}
+        </Text>
+        </Button>
+      )}
+      else {
+        return (null);
+      }
+    };
+
     return (
       <Block flex style={styles.container}>
         <StatusBar hidden />
@@ -26,11 +52,26 @@ class Homepage extends React.Component {
         >
         <Block flex space="between" style={styles.padded}>
             <Block flex space="around" style={{ zIndex: 2 }}>
-              <Block style={styles.title}>
-              </Block>
-              <Block center>
+              <Block center style={styles.title}>
+                <Text center color="white" size={50}>
+                  Welcome Back
+                </Text>
+                <Text center color="white" size={20}
+                style={{
+                  paddingTop: 50,
+                  paddingBottom: 30
+                }}>
+                  Today's Buckets:
+                </Text>
+
+                <Bucket bucket = "1"/>
+                <Bucket bucket = "2"/>
+                <Bucket bucket = "3"/>
+                <Bucket bucket = "4"/>
+
                 <Button
                   style={styles.button}
+                  paddingTop={80}
                   color="#ffffff"
                   onPress={() => navigation.navigate("Home")}
                   textStyle={{ color: "#745c97", fontSize: 20 }}
