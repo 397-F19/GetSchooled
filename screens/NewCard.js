@@ -117,9 +117,9 @@ const styles = StyleSheet.create({
     borderColor: argonTheme.COLORS.INFO,
     borderRadius: 4,
     backgroundColor: "#fff",
-    height: 200,
-    width: 300,
-    fontSize: 20
+    height: height*.2,
+    width: width*.8,
+    fontSize: 15
   }
 });
 

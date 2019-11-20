@@ -32,7 +32,7 @@ class Homepage extends React.Component {
       console.log(bucket)
       if (daydiff%bucketinterval[bucketn-1] === 0) {
         return (
-        <Button color={bucketcolors[bucketn-1]} >
+        <Button color={bucketcolors[bucketn-1]} style = {styles.bucket}>
         <Text style = {{ color: "#ffffff", fontSize: 20 }}>
         {bucketn}
         </Text>
@@ -115,6 +115,10 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0
+  },
+  bucket: {
+    width: width*.5,
+    height: height*.075
   }
 });
 
