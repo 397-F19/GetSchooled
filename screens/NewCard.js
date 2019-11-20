@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, ImageBackground, TextInput } from 'react-native';
 import { Block, Text, Button, theme } from 'galio-framework';
 
 import { Card, Input } from '../components';
@@ -8,53 +8,69 @@ const { width, height } = Dimensions.get("screen");
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
-var front = "";
-var back = "";
-
 class NewCard extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {front: "", back: ""};
+  }
+
   renderArticles = () => {
+    var front = "";
+    var back = "";
+
     return (
       <ImageBackground
           source={Images.Onboarding}
           style={{ height, width, zIndex: 1 }}
       >
       <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.articles}>
-        <Block flex>
-            <Text bold size={16} style={styles.title}>
+        showsVerticalScrollIndicator={false}>
+        <Block center flex paddingTop={30}>
+            <Text bold size={24} style={styles.title}>
               Front
             </Text>
             <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-              <Input right placeholder="Term"
+              <TextInput right placeholder="Term"
+              style={styles.input}
+              textAlign={'center'}
               iconContent={<Block />}
               ref="frontinput"
-              onBlur = {text => {front = text;}}/>
+              onChangeText={(front) => this.setState({front})}
+              value={this.state.front}
+              />
             </Block>
-            <Text bold size={16} style={styles.title}>
+            <Text bold size={24} style={styles.title}>
               Back
             </Text>
             <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-              <Input
+              <TextInput
                 right
                 placeholder="Explanation"
-                style={{
-                  borderColor: argonTheme.COLORS.INFO,
-                  borderRadius: 4,
-                  backgroundColor: "#fff"
-
-                }}
+                style={styles.input}
+                textAlign={'center'}
                 iconContent={<Block />}
                 ref="backinput"
-                onBlur = {text => {back = text;}}
+                onChangeText={(back) => this.setState({back})}
+                value={this.state.back}
               />
             </Block>
             <Block center paddingBottom>
               <Button
                 style={styles.button}
                 color="#ffffff"
-                onPress={() => {var f = this.refs.frontinput;
-                                f.text = ""}}
+                onPress={() => {
+                                var f = this.refs.frontinput;
+                                var b = this.refs.backinput;
+                                console.log(this.state.front);
+                                console.log(this.state.back);
+                                f.clear();
+                                b.clear();
+                                // TODO: add storing the front and back into card storage
+                                this.state.front = "";
+                                this.state.back = "";
+                                console.log(this.state.front);
+                                console.log(this.state.back);}}
                 textStyle={{ color: "#745c97", fontSize: 20 }}
               >
                 Add Card
@@ -96,6 +112,14 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0
+  },
+  input: {
+    borderColor: argonTheme.COLORS.INFO,
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    height: 200,
+    width: 300,
+    fontSize: 20
   }
 });
 
