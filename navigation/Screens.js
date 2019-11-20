@@ -17,6 +17,7 @@ import Homepage from "../screens/Homepage";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
 import NewCard from "../screens/NewCard";
+import Review from "../screens/Review";
 // drawer
 import Menu from "./Menu";
 import DrawerItem from "../components/DrawerItem";
@@ -142,22 +143,6 @@ const AppStack = createDrawerNavigator(
         drawerLabel: () => {}
       }
     },
-    Home: {
-      screen: HomeStack,
-      navigationOptions: navOpt => ({
-        drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} title="Home" />
-        )
-      })
-    },
-    Profile: {
-      screen: ProfileStack,
-      navigationOptions: navOpt => ({
-        drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} screen="Profile" title="Profile" />
-        )
-      })
-    },
     Homepage: {
       screen: Homepage,
       navigationOptions: navOpt => ({
@@ -171,6 +156,30 @@ const AppStack = createDrawerNavigator(
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
           <DrawerItem focused={focused} screen="NewCard" title="NewCard" />
+        )
+      })
+    },
+    Review: {
+      screen: Review,
+      navigationOptions: navOpt => ({
+        drawerLabel: ({ focused }) => (
+          <DrawerItem focused={focused} screen="Review" title="Review" />
+        )
+      })
+    },
+    Profile: {
+      screen: ProfileStack,
+      navigationOptions: navOpt => ({
+        drawerLabel: ({ focused }) => (
+          <DrawerItem focused={focused} screen="Profile" title="Profile" />
+        )
+      })
+    },
+    Home: {
+      screen: HomeStack,
+      navigationOptions: navOpt => ({
+        drawerLabel: ({ focused }) => (
+          <DrawerItem focused={focused} title="Home" />
         )
       })
     },
