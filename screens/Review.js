@@ -50,7 +50,7 @@ class NewCard extends React.Component {
               <Button
                 style={styles.button}
                 color="success"
-                onPress={() => {console.log("yerp");}}
+                onPress={() => {console.log("correct");}}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
               >
                 I got it!
@@ -58,7 +58,7 @@ class NewCard extends React.Component {
               <Button
                 style={styles.button}
                 color="error"
-                onPress={() => {console.log("yerp");}}
+                onPress={() => {console.log("incorrect");}}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
               >
                 I got schooled... :(
