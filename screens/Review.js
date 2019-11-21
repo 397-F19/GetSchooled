@@ -16,12 +16,20 @@ class NewCard extends React.Component {
   }
 
   renderArticles = () => {
-
+    const { navigation } = this.props;
     return (
       <ImageBackground
           source={Images.Onboarding}
           style={{ height, width, zIndex: 1 }}
       >
+        <Button
+                style={styles.button}
+                color="#33ffff"
+                onPress={() => navigation.navigate("Homepage")}
+                textStyle={{ color: "#745c97", fontSize: 20 }}
+              >
+                Home
+              </Button>
       <ScrollView
         showsVerticalScrollIndicator={false}>
         <Block center flex paddingTop={height*.1}>
