@@ -23,7 +23,9 @@ class NewCard extends React.Component {
           style={{ height, width, zIndex: 1 }}
       >
         <Button
-                style={styles.button}
+                style={{ marginTop: 10,
+                  marginLeft: 10,
+                width: width * .2}}
                 color="#33ffff"
                 onPress={() => navigation.navigate("Homepage")}
                 textStyle={{ color: "#745c97", fontSize: 20 }}
