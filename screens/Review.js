@@ -14,7 +14,7 @@ class NewCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {front: "Question", back: "Answer", side: "front", curtext: "Question"};
+    this.state = {front: "Question", back: "Answer", side: "front", curtext: "Question" + " " + String(current_card_number)};
   }
 
   renderArticles = () => {
@@ -48,11 +48,11 @@ class NewCard extends React.Component {
               ref="qcard"
               textStyle={{ color: "#745c97", fontSize: 20 }}
               onPress={() => {if (this.state.side === "front") {
-                                this.setState({curtext: this.state.back});
+                                this.setState({curtext: this.state.back + " " + String(current_card_number)});
                                 this.setState({side: "back"})
                               }
                               else {
-                                this.setState({curtext: this.state.front});
+                                this.setState({curtext: this.state.front + " " + String(current_card_number)});
                                 this.setState({side: "front"})
                               }}}>
               {this.state.curtext}
