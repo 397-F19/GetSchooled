@@ -39,11 +39,10 @@ class NewCard extends React.Component {
           cardList.push(cards[card]);
         }
         console.log(cardList);
-        console.log(cardList[1].front);
         this.setState({
-          back: cards["card1"].back,
-          front: cards["card1"].front,
-          curtext: cards["card1"].front,
+          back: cardList[0].back,
+          front: cardList[0].front,
+          curtext: cardList[0].front,
           cards: cardList
         });
       }
@@ -106,7 +105,7 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="success"
                 onPress={() => {
-                         {cardIndex = cardIndex + 1
+                         {cardIndex = (cardIndex + 1) % this.state.cards.length;
                           this.setState({ front: this.state.cards[cardIndex].front,
                                           back: this.state.cards[cardIndex].back,
                                           curtext: this.state.cards[cardIndex].front,
@@ -121,7 +120,7 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="error"
                 onPress={() => {
-                  {cardIndex = cardIndex + 1
+                  {cardIndex = (cardIndex + 1) % this.state.cards.length;
                    this.setState({ front: this.state.cards[cardIndex].front,
                                    back: this.state.cards[cardIndex].back,
                                    curtext: this.state.cards[cardIndex].front,
