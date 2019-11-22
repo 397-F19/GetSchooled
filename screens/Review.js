@@ -8,6 +8,8 @@ const { width, height } = Dimensions.get("screen");
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
+var current_card_number = 1;
+
 class NewCard extends React.Component {
 
   constructor(props) {
@@ -60,7 +62,11 @@ class NewCard extends React.Component {
               <Button
                 style={styles.button}
                 color="success"
-                onPress={() => {console.log("correct");}}
+                onPress={() => {
+                         {current_card_number = current_card_number + 1
+                          this.setState({curtext: "Question" + " " + String(current_card_number)})
+                         }
+                        }}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
               >
                 I got it!
@@ -68,7 +74,11 @@ class NewCard extends React.Component {
               <Button
                 style={styles.button}
                 color="error"
-                onPress={() => {console.log("incorrect");}}
+                onPress={() => {
+                         {current_card_number = current_card_number + 1
+                          this.setState({curtext: "Question" + " " + String(current_card_number)})
+                         }
+                        }}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
               >
                 I got schooled... :(
