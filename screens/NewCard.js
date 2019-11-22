@@ -7,6 +7,9 @@ import articles from '../constants/articles';
 const { width, height } = Dimensions.get("screen");
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
+import * as fb from '../firebase';
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 class NewCard extends React.Component {
 
@@ -77,6 +80,20 @@ class NewCard extends React.Component {
                                 console.log(this.state.back);
                                 f.clear();
                                 b.clear();
+                                db = firebase.database()
+                                db.ref('/user-a').push({
+                                  front: this.state.front,
+                                  back: this.state.back,
+                                  bucket: 1
+                                })
+                                db.ref("/").on('value', snap =>
+                                {
+                                  if(snap.val())
+                                  {
+                                    console.log(snap.val());
+                                  }
+                                })
+
                                 // TODO: add storing the front and back into card storage
                                 this.setState({front: ""});
                                 this.setState({back: ""});

@@ -7,18 +7,61 @@ import articles from '../constants/articles';
 const { width, height } = Dimensions.get("screen");
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
-var current_card_number = 1;
+var cardIndex = 0;
 
 class NewCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {front: "Question", back: "Answer", side: "front", curtext: "Question" + " " + String(current_card_number)};
+    this.state = {front: "[Loading cards, please wait]", back: "[Loading cards, please wait]", side: "front", curtext: "[Loading cards, please wait]", cards: [{front: "[Loading cards, please wait]", back: "[Loading cards, please wait]"}], cardIndex: 0};
   }
+
+
+  getData()
+  {
+    let db = firebase.database();
+    db.ref("/user-a").on('value', snap =>
+    {
+      if (snap.val())
+      {
+        console.log("test");;
+        let cards = snap.val();
+        console.log(cards)
+        console.log(cards["card1"]);
+        console.log(cards.children);
+
+        let cardList = []
+        for(var card in cards)
+        {
+          cardList.push(cards[card]);
+        }
+        console.log(cardList);
+        console.log(cardList[1].front);
+        this.setState({
+          back: cards["card1"].back,
+          front: cards["card1"].front,
+          curtext: cards["card1"].front,
+          cards: cardList
+        });
+      }
+    });
+  }
+
+  componentDidMount()
+  {
+    this.getData();
+    // TODO: filter out the cards that aren't in today's Buckets
+  }
+
+
+
 
   renderArticles = () => {
     const { navigation } = this.props;
+
     return (
       <ImageBackground
           source={Images.Onboarding}
@@ -48,11 +91,11 @@ class NewCard extends React.Component {
               ref="qcard"
               textStyle={{ color: "#745c97", fontSize: 20 }}
               onPress={() => {if (this.state.side === "front") {
-                                this.setState({curtext: this.state.back + " " + String(current_card_number)});
+                                this.setState({curtext: this.state.back});
                                 this.setState({side: "back"})
                               }
                               else {
-                                this.setState({curtext: this.state.front + " " + String(current_card_number)});
+                                this.setState({curtext: this.state.front});
                                 this.setState({side: "front"})
                               }}}>
               {this.state.curtext}
@@ -63,8 +106,11 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="success"
                 onPress={() => {
-                         {current_card_number = current_card_number + 1
-                          this.setState({curtext: "Question" + " " + String(current_card_number)})
+                         {cardIndex = cardIndex + 1
+                          this.setState({ front: this.state.cards[cardIndex].front,
+                                          back: this.state.cards[cardIndex].back,
+                                          curtext: this.state.cards[cardIndex].front,
+                                          side: "front"});
                          }
                         }}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
@@ -75,10 +121,13 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="error"
                 onPress={() => {
-                         {current_card_number = current_card_number + 1
-                          this.setState({curtext: "Question" + " " + String(current_card_number)})
-                         }
-                        }}
+                  {cardIndex = cardIndex + 1
+                   this.setState({ front: this.state.cards[cardIndex].front,
+                                   back: this.state.cards[cardIndex].back,
+                                   curtext: this.state.cards[cardIndex].front,
+                                   side: "front"});
+                  }
+                 }}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
               >
                 I got schooled... :(

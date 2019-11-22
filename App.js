@@ -3,9 +3,14 @@ import { Image } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import { Block, GalioProvider } from 'galio-framework';
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+
 
 import Screens from './navigation/Screens';
 import { Images, articles, argonTheme } from './constants';
+
 
 // cache app images
 const assetImages = [
