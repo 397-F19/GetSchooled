@@ -16,7 +16,7 @@ class NewCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {front: "[Loading cards, please wait]", back: "[Loading cards, please wait]", side: "front", curtext: "[Loading cards, please wait]", cards: [{front: "[Loading cards, please wait]", back: "[Loading cards, please wait]"}], cardIndex: 0};
+    this.state = {front: "Question", back: "Answer", side: "front", curtext: "Question"};
   }
 
 
