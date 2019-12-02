@@ -63,7 +63,25 @@ class NewCard extends React.Component {
        }
       }
       return cards
+    };
+
+    const ReviewLayout = ({state, setState}) => {
+      if(state.cards === undefined) {
+        return (null)
+      }
+      if(state.cards.length == 0){
+        return (
+      <Text bold size={20} style={styles.reviewDone}>
+        Done :)
+      </Text>
+      )
     }
+    else{
+      return (null)
+    }
+  }
+
+
     return (
       <ImageBackground
           source={Images.Onboarding}
@@ -79,6 +97,7 @@ class NewCard extends React.Component {
               >
                 Home
               </Button>
+      <ReviewLayout state={this.state} setState={this.setState}/>
       <ScrollView
         showsVerticalScrollIndicator={false}>
         <Block center flex paddingTop={height*.1}>
@@ -168,6 +187,11 @@ const styles = StyleSheet.create({
   },
   bucketInfo: {
     paddingBottom: 20,
+    color: "#ffffff"
+  },
+  reviewDone: {
+    paddingHorizontal: theme.SIZES.BASE * 10,
+    paddingTop: 20,
     color: "#ffffff"
   },
   button: {
