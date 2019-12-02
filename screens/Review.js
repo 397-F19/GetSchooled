@@ -19,7 +19,6 @@ class NewCard extends React.Component {
     this.state = {front: "Question", back: "Answer", side: "front", curtext: "Question"};
   }
 
-
   getData()
   {
     let db = firebase.database();
@@ -38,7 +37,6 @@ class NewCard extends React.Component {
         {
           cardList.push(cards[card]);
         }
-        console.log(cardList);
         this.setState({
           back: cardList[0].back,
           front: cardList[0].front,
@@ -55,12 +53,17 @@ class NewCard extends React.Component {
     // TODO: filter out the cards that aren't in today's Buckets
   }
 
-
-
-
   renderArticles = () => {
     const { navigation } = this.props;
 
+    const RemoveCard = (cards, idx)=> {
+      for( var i = 0; i < cards.length; i++){
+       if ( cards[i] === 1) {
+         cards.splice(i, 1);
+       }
+      }
+      return cards
+    }
     return (
       <ImageBackground
           source={Images.Onboarding}
@@ -82,7 +85,10 @@ class NewCard extends React.Component {
             <Text bold size={40} style={styles.title}>
               Review
             </Text>
-            <Block style={{ paddingHorizontal: theme.SIZES.BASE }} paddingTop={height*.05}>
+            <Text bold size={20} style={styles.bucketInfo}>
+              Bucket: 1
+            </Text>
+            <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
               <Button
               style={styles.card}
               textAlign={'center'}
@@ -100,7 +106,7 @@ class NewCard extends React.Component {
               {this.state.curtext}
               </Button>
             </Block>
-            <Block center paddingBottom paddingTop={height*.05}>
+            <Block center paddingBottom>
               <Button
                 style={styles.button}
                 color="success"
@@ -109,6 +115,7 @@ class NewCard extends React.Component {
                           this.setState({ front: this.state.cards[cardIndex].front,
                                           back: this.state.cards[cardIndex].back,
                                           curtext: this.state.cards[cardIndex].front,
+                                          cards: this.state.cards.slice(0, cardIndex).concat(this.state.cards.slice(cardIndex + 1, this.state.cards.length)),
                                           side: "front"});
                          }
                         }}
@@ -154,16 +161,17 @@ const styles = StyleSheet.create({
   },
   articles: {
     width: width - theme.SIZES.BASE * 2,
-    paddingVertical: theme.SIZES.BASE,
   },
   title: {
-    paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,
-    marginTop: 30,
+    color: "#ffffff"
+  },
+  bucketInfo: {
+    paddingBottom: 20,
     color: "#ffffff"
   },
   button: {
-    marginTop: 40,
+    marginTop: 20,
     width: width - theme.SIZES.BASE * 10,
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,

@@ -18,7 +18,7 @@ class Homepage extends React.Component {
   render() {
     const { navigation } = this.props;
 
-    var firstlogin = new Date("11/16/19");
+    var firstlogin = new Date("11/29/19");
     var today = new Date();
     var daydiff = Math.floor((today.getTime() - firstlogin.getTime()) /
                               (1000 * 3600 * 24));
@@ -30,6 +30,8 @@ class Homepage extends React.Component {
     const Bucket = bucket => {
       var bucketn = Number(bucket.bucket);
       console.log(bucket)
+      console.log(daydiff)
+      console.log(bucketinterval[bucketn-1])
       if (daydiff%bucketinterval[bucketn-1] === 0) {
         return (
         <Button color={bucketcolors[bucketn-1]} style = {styles.bucket}>
@@ -117,6 +119,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0
   },
   bucket: {
+    marginBottom: 10,
     width: width*.5,
     height: height*.075
   }
