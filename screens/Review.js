@@ -80,7 +80,7 @@ class NewCard extends React.Component {
           source={Images.Onboarding}
           style={{ height, width, zIndex: 1 }}
       >
-          <Text style={{fontWeight: 'bold', marginTop: 50, color: "#ffffff", fontSize: 20}}>
+          <Text style={{fontWeight: 'bold', marginLeft: 10, marginTop: 50, color: "#ffffff", fontSize: 20}}>
           You Have No More Cards To Review In This Bucket
           </Text>
           <Button
