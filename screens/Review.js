@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, ScrollView, ImageBackground, TextInput } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, ImageBackground, TextInput, Alert } from 'react-native';
 import { Block, Text, Button, theme } from 'galio-framework';
 
 import { Card, Input } from '../components';
@@ -9,6 +9,11 @@ import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import firebase from 'firebase/app';
 import 'firebase/database';
+
+var cardHistory = [];
+var successfulCards = [];
+var traversingHistory = false;
+//let traverseHistoryIndex; //var traverseHistoryIndex = cardHistory.length - 1
 
 var cardIndex = 0;
 
@@ -31,6 +36,7 @@ class NewCard extends React.Component {
         console.log(cards)
         console.log(cards["card1"]);
         console.log(cards.children);
+        console.log("Cards length:", Object.values(cards).length);
 
         let cardList = []
         for(var card in cards)
@@ -41,7 +47,8 @@ class NewCard extends React.Component {
           back: cardList[0].back,
           front: cardList[0].front,
           curtext: cardList[0].front,
-          cards: cardList
+          cards: cardList,
+          cardsAreLoaded: true
         });
       }
     });
@@ -64,6 +71,42 @@ class NewCard extends React.Component {
       }
       return cards
     }
+    console.log("Cards are:", this.state.cards);
+    if(this.state.cardsAreLoaded == true){
+      if(Object.values(this.state.cards).length <= 0){
+        return (
+              <React.Fragment>
+              <ImageBackground
+          source={Images.Onboarding}
+          style={{ height, width, zIndex: 1 }}
+      >
+          <Text style={{fontWeight: 'bold', marginTop: 50, color: "#ffffff", fontSize: 20}}>
+          You Have No More Cards To Review In This Bucket
+          </Text>
+          <Button
+                style={{ marginTop: 100,
+                  marginLeft: 10}}
+                color="#33ffff"
+                onPress={() => navigation.navigate("Homepage")}
+                textStyle={{ color: "#745c97", fontSize: 20 }}
+              >
+                Return Home
+              </Button>
+                    </ImageBackground>
+                  </React.Fragment>
+
+              /*
+          Alert.alert(
+  'You Have No More Cards To Review \n In This Bucket',
+  '',
+  [
+    {text: 'Return Home', onPress: () => navigation.navigate("Homepage")}
+  ],
+  {cancelable: false}
+  ) */
+);
+      }
+    else{
     return (
       <ImageBackground
           source={Images.Onboarding}
@@ -111,12 +154,66 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="success"
                 onPress={() => {
-                         {cardIndex = (cardIndex + 1) % this.state.cards.length;
-                          this.setState({ front: this.state.cards[cardIndex].front,
-                                          back: this.state.cards[cardIndex].back,
-                                          curtext: this.state.cards[cardIndex].front,
-                                          cards: this.state.cards.slice(0, cardIndex).concat(this.state.cards.slice(cardIndex + 1, this.state.cards.length)),
-                                          side: "front"});
+                         {
+                        if(!successfulCards.includes(cardIndex)){
+                          successfulCards.push(cardIndex);
+                          console.log("successfulCards:", successfulCards);
+                        }
+                        if(traversingHistory == true){
+                          if(traverseHistoryIndex == (cardHistory.length - 1)){
+                               traversingHistory = false
+                               cardIndex = cardIndex + 1;
+                          }
+                         else if(traverseHistoryIndex < (cardHistory.length - 1)){
+                               traverseHistoryIndex = traverseHistoryIndex + 1; 
+                               cardIndex = cardHistory[traverseHistoryIndex];
+                             }
+                        }
+                        else if(traversingHistory == false && cardIndex < this.state.cards.length){
+                               cardHistory.push(cardIndex);
+                               cardIndex = cardIndex + 1;
+                        }
+                        if(cardIndex >= this.state.cards.length){
+                          Alert.alert(
+  'You Reached the End',
+  '',
+  [
+    {
+      text: 'Review previous cards',
+      onPress: () => console.log('Review previous cards'),
+      style: 'cancel',
+    },
+    {text: 'Return Home', onPress: () => {
+      successfulCards.sort();
+      for (var i = successfulCards.length - 1; i >= 0; i--){
+          this.state.cards.splice(successfulCards[i], 1);
+      }
+      /*
+      for (var i = 0; i < successfulCards.length ; i++){
+        this.state.cards.splice(successfulCards[i], 1);
+        //console.log("Spliced out cards:", this.state.cards.splice(successfulCards[i], 1));
+      } 
+      */
+      this.setState({cards: this.state.cards});
+      successfulCards = [];
+      cardIndex = 0;
+      cardHistory = [];
+      navigation.navigate("Homepage");
+      console.log("Current cards line 174:", this.state.cards);
+    }},
+  ],
+  {cancelable: false}
+);
+
+                        }
+                        else{
+
+                             this.setState({ front: this.state.cards[cardIndex].front,
+                                                  back: this.state.cards[cardIndex].back,
+                                                  curtext: this.state.cards[cardIndex].front,
+                                                  //cards: this.state.cards.slice(0, cardIndex).concat(this.state.cards.slice(cardIndex + 1, this.state.cards.length)),
+                                                  side: "front"});
+                        }
                          }
                         }}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
@@ -127,23 +224,108 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="error"
                 onPress={() => {
-                  {cardIndex = (cardIndex + 1) % this.state.cards.length;
+                  {
+                  if(successfulCards.includes(cardIndex)){
+                          _cardIndex = successfulCards.indexOf(cardIndex);
+                          successfulCards.splice(_cardIndex, 1);
+                          console.log("successfulCards:", successfulCards);
+                        }
+                   if(traversingHistory == true){
+                          if(traverseHistoryIndex == (cardHistory.length - 1)){
+                               traversingHistory = false
+                               cardIndex = cardIndex + 1;
+                          }
+                         else if(traverseHistoryIndex < (cardHistory.length - 1)){
+                               traverseHistoryIndex = traverseHistoryIndex + 1; 
+                               cardIndex = cardHistory[traverseHistoryIndex];
+                             }
+                        }
+                   else if(traversingHistory == false && cardIndex < this.state.cards.length){
+                               cardHistory.push(cardIndex);
+                               cardIndex = cardIndex + 1;
+                        }
+                        
+                        if(cardIndex >= this.state.cards.length){
+                          Alert.alert(
+  'You Reached the End',
+  '',
+  [
+    {
+      text: 'Review previous cards',
+      onPress: () => console.log('Review previous cards'),
+      style: 'cancel',
+    },
+    {text: 'Return Home', onPress: () => {
+      successfulCards.sort();
+      for (var i = successfulCards.length - 1; i >= 0; i--){
+          this.state.cards.splice(successfulCards[i], 1);
+      }
+      /*
+      for (var i = 0; i < successfulCards.length ; i++){
+        this.state.cards.splice(successfulCards[i], 1);
+         //console.log("Spliced out cards:", this.state.cards.splice(successfulCards[i], 1));
+      }
+      */
+      this.setState({cards: this.state.cards});
+      successfulCards = [];
+      cardIndex = 0;
+      cardHistory = [];
+      navigation.navigate("Homepage");
+      console.log("Current cards line 239:", this.state.cards);
+    }},
+  ],
+  {cancelable: false}
+);
+
+                        }
+                        else{
+                        
                    this.setState({ front: this.state.cards[cardIndex].front,
                                    back: this.state.cards[cardIndex].back,
                                    curtext: this.state.cards[cardIndex].front,
                                    side: "front"});
+                        }
                   }
                  }}
                 textStyle={{ color: "#ffffff", fontSize: 20 }}
               >
                 I got schooled... :(
               </Button>
+              <Button
+                style={styles.button}
+                color="primary"
+                onPress={() => {
+                  {
+                    if(cardIndex > 0){
+                      if(traversingHistory == false){
+                        traverseHistoryIndex = cardHistory.length - 1;
+                      }
+                      else if(traversingHistory == true){
+                        traverseHistoryIndex = traverseHistoryIndex - 1; 
+                      }
+                      traversingHistory = true;
+                      cardIndex = cardHistory[traverseHistoryIndex];
+                    }
+
+                      this.setState({ front: this.state.cards[cardIndex].front,
+                                      back: this.state.cards[cardIndex].back,
+                                      curtext: this.state.cards[cardIndex].front,
+                                      side: "front"});
+                      console.log("Current cards line 281:", this.state.cards);
+                  }
+                 }}
+                textStyle={{ color: "#ffffff", fontSize: 20 }}
+              >
+                Go back
+              </Button>
             </Block>
         </Block>
       </ScrollView>
       </ImageBackground>
-    )
+      )
+    }
   }
+}
 
   render() {
     return (
