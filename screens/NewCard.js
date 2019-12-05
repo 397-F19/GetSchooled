@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, ScrollView, ImageBackground, TextInput } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, ImageBackground, TextInput, Alert } from 'react-native';
 import { Block, Text, Button, theme } from 'galio-framework';
 
 import { Card, Input } from '../components';
@@ -74,6 +74,18 @@ class NewCard extends React.Component {
                 style={styles.button}
                 color="#ffffff"
                 onPress={() => {
+                                if(this.state.front == "" || this.state.back == ""){
+                                  Alert.alert(
+  'Please fill out both sides of the card',
+  '',
+  [
+    {
+      text: 'OK'
+    }],
+  {cancelable: false}
+);
+                                }
+                                else{
                                 var f = this.refs.frontinput;
                                 var b = this.refs.backinput;
                                 console.log(this.state.front);
@@ -97,6 +109,7 @@ class NewCard extends React.Component {
                                 // TODO: add storing the front and back into card storage
                                 this.setState({front: ""});
                                 this.setState({back: ""});
+                                }
                                 console.log(this.state.front);
                                 console.log(this.state.back);}}
                 textStyle={{ color: "#745c97", fontSize: 20 }}
